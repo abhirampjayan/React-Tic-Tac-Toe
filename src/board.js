@@ -1,13 +1,7 @@
 import React from "react";
-
-export default function Board() {
-  const initialSquares = Array(9).fill();
-  const [squares, setSquares] = React.useState(
-    () => JSON.parse(window.localStorage.getItem("squares")) || initialSquares
-  );
-  React.useEffect(() => {
-    window.localStorage.setItem("squares", JSON.stringify(squares));
-  },[squares]);
+import { useSyncLocalStorage } from "./hooks/utils";
+export default function Board({ initialSquares = Array(9).fill() }) {
+  const [squares, setSquares] = useSyncLocalStorage("squares", initialSquares);
   const nextValue = calculateNextValue(squares);
   const winner = calculateWinner(squares);
   const status = calculateStatus(winner, squares, nextValue);

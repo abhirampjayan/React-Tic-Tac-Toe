@@ -1,7 +1,11 @@
 import React from "react";
 import { useSyncLocalStorage } from "./hooks/utils";
-export default function Board({ initialSquares = Array(9).fill() }) {
+export default function Board() {
+  const initialSquares = Array(9).fill();
   const [squares, setSquares] = useSyncLocalStorage("squares", initialSquares);
+  function restart() {
+    setSquares(initialSquares);
+  }
   const nextValue = calculateNextValue(squares);
   const winner = calculateWinner(squares);
   const status = calculateStatus(winner, squares, nextValue);
@@ -13,9 +17,7 @@ export default function Board({ initialSquares = Array(9).fill() }) {
     squaresCopy[square] = nextValue;
     setSquares(squaresCopy);
   }
-  function restart() {
-    setSquares(initialSquares);
-  }
+  
   function renderSquare(params) {
     return (
       <button className="square" onClick={() => selectSquare(params)}>
@@ -23,6 +25,7 @@ export default function Board({ initialSquares = Array(9).fill() }) {
       </button>
     );
   }
+
   return (
     <div>
       <div className="status">{status}</div>
